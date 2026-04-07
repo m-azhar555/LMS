@@ -3,20 +3,18 @@ const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
-// Note: Agar tumhara folder 'config' hai toh path './config/db' hoga. 
-// Main tumhare code ke mutabiq './connect/db' hi rakh raha hoon.
+
 const connectDB = require('./connect/db'); 
 const cookieParser = require('cookie-parser');
 const authRoutes = require('./routes/authRoutes');
+const leadRoutes = require('./routes/leadRoutes');
 
-// Connect Database
+
 connectDB();
 
 const app = express();
 
-// ==========================================
-// 1. Global Middleware Setup
-// ==========================================
+
 app.use(helmet()); 
 app.use(cors());
 app.use(express.json()); 
@@ -27,9 +25,7 @@ if (process.env.NODE_ENV === 'development') {
     app.use(morgan('dev'));
 }
 
-// ==========================================
-// 2. Base & API Routes (Hamesha 404 se pehle)
-// ==========================================
+
 app.get('/', (req, res) => {
     res.status(200).json({
         success: true,
@@ -38,13 +34,12 @@ app.get('/', (req, res) => {
     });
 });
 
-// Yahan tumhari sari APIs aayengi
+
 app.use('/api/v1/auth', authRoutes);
+app.use('/api/v1/lead', leadRoutes);
 
 
-// ==========================================
-// 3. 404 Catch-All Handler (Sabse End Mein)
-// ==========================================
+
 app.use((req, res, next) => {
     res.status(404).json({
         success: false,
@@ -52,9 +47,7 @@ app.use((req, res, next) => {
     });
 });
 
-// ==========================================
-// 4. Server Initialization & Error Handling
-// ==========================================
+
 const PORT = process.env.PORT || 5000;
 
 const server = app.listen(PORT, () => {
