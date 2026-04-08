@@ -8,6 +8,7 @@ const connectDB = require('./connect/db');
 const cookieParser = require('cookie-parser');
 const authRoutes = require('./routes/authRoutes');
 const leadRoutes = require('./routes/leadRoutes');
+const saleRoutes = require('./routes/saleRoutes');
 
 
 connectDB();
@@ -37,6 +38,7 @@ app.get('/', (req, res) => {
 
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/lead', leadRoutes);
+app.use('/api/v1/sales', saleRoutes);
 
 
 
