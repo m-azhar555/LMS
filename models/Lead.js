@@ -33,6 +33,10 @@ const leadSchema = new mongoose.Schema({
         type: mongoose.Schema.ObjectId,
         ref: 'User',
         required: true 
+    },
+    documentUrl: {
+        type: String,
+        default: 'no-document'
     }
 }, { timestamps: true });
 
