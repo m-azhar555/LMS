@@ -1,16 +1,17 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
-const connectDB = async () => {
-    try {
-        // Mongoose connection setup
-        const conn = await mongoose.connect(process.env.MONGO_URI);
-        
-        console.log(`MongoDB Connected: ${conn.connection.host}`);
-    } catch (error) {
-        console.error(`Database Connection Error: ${error.message}`);
-        // Exit process with failure
-        process.exit(1);
-    }
+const MONGODB_URI = process.env.MONGODB_URI || "";
+
+if (!MONGODB_URI) {
+  throw new Error("Please define the MONGODB_URI environment variable");
+}
+
+export const connectDB = async () => {
+  try {
+    if (mongoose.connection.readyState >= 1) return;
+    await mongoose.connect(MONGODB_URI);
+    console.log("🚀 MongoDB Connected to CodeVector DB");
+  } catch (error) {
+    console.error("❌ MongoDB Connection Error:", error);
+  }
 };
-
-module.exports = connectDB;
